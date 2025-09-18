@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Test Chat App" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        header { margin-bottom: 20px; }
+        .messages { border: 1px solid #ccc; padding: 10px; max-width: 600px; }
+        .message { margin-bottom: 10px; padding: 5px; border-bottom: 1px solid #eee; }
+        .reply { font-size: 0.9em; color: #555; margin-left: 15px; }
+        textarea { width: 100%; }
+    </style>
+  </head>
+
+  <body>
+  <header>
+    <div class="app">
+      <span class="app-icon">✆</span>
+      <h1 class="app-title">Simple Chat App</h1>
+      <small class="app-desc">Простое приложение для переписки</small>
+    </div>
+
+    <div class = "header-two">
+      <% if logged_in? %>
+        Привет, <%= current_user.username %> |
+        <%= link_to "Пользователи", users_path, class: "panel-title" %> |
+        <%= button_to "Выйти", logout_path, method: :delete, class: "btn btn-sm", style: "float: left" %>
+        <%= button_to "Удалить мой аккаунт", destroy_account_user_path(current_user),
+                      method: :delete,
+                      form: { data: { turbo_confirm: "Вы точно хотите удалить свой аккаунт? Это действие нельзя отменить." } },
+                      class: "btn btn-sm",
+                      style: "background-color:#ffcccc; border-color:#ff0000;" %>
+    <% else %>
+        <%= link_to "Войти", login_path, class: "btn btn-sm" %> |
+        <%= link_to "Регистрация", signup_path, class: "btn btn-sm" %>
+      <% end %>
+    </div>
+  </header>
+
+  <% if flash[:notice] %><p style="color:#015562;"><%= flash[:notice] %></p><% end %>
+
+  <%= yield %>
+  </body>
+</html>

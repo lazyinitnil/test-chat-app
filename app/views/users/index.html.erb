@@ -1,0 +1,11 @@
+<h1>Пользователи</h1>
+
+<ul>
+  <% @users.each do |user| %>
+    <% next if user == current_user %>
+    <li style="margin-bottom:8px;">
+      <%= image_tag(user.avatar || "avatars/default.png", style: "border-color: #{['#FF0000','#00FF00','#0000FF','#FFA500'].sample};", class: "user-avatar") %>
+      <%= link_to user.username, user_messages_path(user), class: "btn" %>
+    </li>
+  <% end %>
+</ul>
