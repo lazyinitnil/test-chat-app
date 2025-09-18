@@ -19,6 +19,10 @@ class User < ApplicationRecord
 
   before_create :assign_random_avatar
 
+  def online?
+    last_login_at.present? && last_login_at > 3.minutes.ago
+  end
+
   private
 
   def assign_random_avatar

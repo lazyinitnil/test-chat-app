@@ -44,7 +44,6 @@ header {
 .app-desc { font-size:12px; color:#555; margin-left:6px; }
 
 .header-two{
-
 }
 
 .panel-title{
@@ -98,6 +97,8 @@ header {
 .chat-messages p {
     margin: 5px 0;
     padding: 5px;
+    word-wrap: break-word;
+    max-width: 100%;
     border-bottom: 1px solid #ccc;
     background-color: #e8e8e8;
     border-radius: 4px;

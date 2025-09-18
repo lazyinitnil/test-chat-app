@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(username: params[:username])
     if user&.authenticate(params[:password])
+      user.update(last_login_at: Time.current)
       session[:user_id] = user.id
       redirect_to users_path, notice: "Вход выполнен"
     else

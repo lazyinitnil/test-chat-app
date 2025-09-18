@@ -15,7 +15,7 @@ usernames = %w[Alice Bob Carol Dave Eve Frank Grace Henry Ivy Jack Karen Leo]
 usernames.each do |name|
   user = User.create!(
     username: name,
-    password: "passwords",
+    password: "password",
     password_confirmation: "passwords"
   )
 

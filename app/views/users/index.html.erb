@@ -6,6 +6,19 @@
     <li style="margin-bottom:8px;">
       <%= image_tag(user.avatar || "avatars/default.png", style: "border-color: #{['#FF0000','#00FF00','#0000FF','#FFA500'].sample};", class: "user-avatar") %>
       <%= link_to user.username, user_messages_path(user), class: "btn" %>
+
+      <% if user.last_login_at.present? %>
+        <% if user.online? %>
+          <span style="color:#0095b7; font-weight:bold; margin-left:8px;">● онлайн</span>
+        <% else %>
+          <small style="color:#666; margin-left:8px;">
+            последний вход: <%= l user.last_login_at, format: :short %>
+          </small>
+        <% end %>
+      <% else %>
+        <small style="color:#999; margin-left:8px;">никогда не был в сети</small>
+      <% end %>
+
     </li>
   <% end %>
 </ul>

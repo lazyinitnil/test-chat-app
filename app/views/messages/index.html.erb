@@ -1,4 +1,4 @@
-<h1>Чат с <%= @other.username %></h1>
+<h1>Чат с <%= @other.username%></h1>
 
 <div class="chat-top-bar">
   <%= link_to "⬅ К списку пользователей", users_path, class: "btn" %>
@@ -12,7 +12,18 @@
         <%= image_tag(m.sender.avatar || "avatars/default.png",
                       style: "border-color: #{['#FF0000','#00FF00','#0000FF','#FFA500'].sample};",
                       class: "user-avatar") %>
-        <strong><%= m.sender.username %>:</strong>
+        <strong><%= m.sender.username %></strong>
+
+        <% if m.sender.last_login_at.present? %>
+          <% if m.sender.online? %>
+            <small style="color:green; font-weight:bold;">● онлайн</small><br>
+          <% else %>
+            <small style="color:#666;">последний вход: <%= l m.sender.last_login_at, format: :short %></small><br>
+          <% end %>
+        <% else %>
+          <small style="color:#999;">никогда не был в сети</small><br>
+
+        <% end %>
         <%= m.content %>
 
         <% if m.file.attached? %>
