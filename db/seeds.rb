@@ -9,14 +9,15 @@
 #   end
 
 User.destroy_all
+Message.destroy_all
 
 usernames = %w[Alice Bob Carol Dave Eve Frank Grace Henry Ivy Jack Karen Leo]
 
-usernames.each do |name|
+users = usernames.map do |name|
   user = User.create!(
     username: name,
     password: "password",
-    password_confirmation: "passwords"
+    password_confirmation: "password"
   )
 
   avatar_path = Rails.root.join("app/assets/images/avatars/#{rand(1..12)}.png")
@@ -24,5 +25,27 @@ usernames.each do |name|
     user.avatar.attach(io: File.open(avatar_path), filename: "#{name.downcase}_avatar.png")
   end
 
+  if rand < 0.2
+    user.update!(last_login_at: nil)
+  else
+    user.update!(last_login_at: rand(1..7).days.ago + rand(0..23).hours + rand(0..59).minutes)
+  end
+
   puts "Создан пользователь #{user.username}"
+  user
+end
+
+users.each do |sender|
+  recipients = users.reject { |u| u == sender }.sample(6)
+  recipients.each do |receiver|
+    3.times do
+      content = ["Привет!", "Как дела?", "Что нового?", "Проверка чата", "Тестовое сообщение"].sample
+      Message.create!(
+        sender: sender,
+        receiver: receiver,
+        content: content,
+        created_at: rand(1..7).days.ago + rand(0..23).hours + rand(0..59).minutes
+      )
+    end
+  end
 end
