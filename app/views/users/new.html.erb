@@ -1,0 +1,29 @@
+<h1>Регистрация</h1>
+
+<%= form_with model: @user, url: signup_path, local: true do |f| %>
+  <p>
+    <%= f.label :username, "Имя пользователя" %><br>
+    <%= f.text_field :username, size: 30 %>
+    <% if @user.errors[:username].any? %>
+      <div class="error"><%= @user.errors[:username].first %></div>
+    <% end %>
+  </p>
+
+  <p>
+    <%= f.label :password, "Пароль" %><br>
+    <%= f.password_field :password, size: 30 %>
+    <% if @user.errors[:password].any? %>
+      <div class="error"><%= @user.errors[:password].first %></div>
+    <% end %>
+  </p>
+
+  <p>
+    <%= f.label :password_confirmation, "Подтверждение пароля" %><br>
+    <%= f.password_field :password_confirmation, size: 30 %>
+    <% if @user.errors[:password_confirmation].any? %>
+      <div class="error"><%= @user.errors[:password_confirmation].first %></div>
+    <% end %>
+  </p>
+
+  <p><%= f.submit "Зарегистрироваться", class: "btn" %></p>
+<% end %>

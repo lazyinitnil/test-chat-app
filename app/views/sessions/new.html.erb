@@ -1,0 +1,18 @@
+<h1>Вход</h1>
+
+<% if flash[:alert] %>
+  <div class="error"><%= flash[:alert] %></div>
+<% end %>
+
+<%= form_with url: login_path, local: true do |f| %>
+  <p>
+    <%= f.label :username, "Имя пользователя" %><br>
+    <%= f.text_field :username %>
+  </p>
+  <p>
+    <%= f.label :password, "Пароль" %><br>
+    <%= f.password_field :password %>
+  </p>
+  <p><%= f.submit "Войти", class: "btn btn-sm" %></p>
+<% end %>
+

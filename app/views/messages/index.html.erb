@@ -1,0 +1,72 @@
+<h1>Чат с <%= @other.username %></h1>
+
+<div class="chat-top-bar">
+  <%= link_to "⬅ К списку пользователей", users_path, class: "btn" %>
+  <%= link_to "Обновить", user_messages_path(@other), class: "btn" %>
+</div>
+
+<section class="chat-panel">
+  <div class="chat-messages" >
+    <% @messages.each do |m| %>
+      <p>
+        <%= image_tag(m.sender.avatar || "avatars/default.png",
+                      style: "border-color: #{['#FF0000','#00FF00','#0000FF','#FFA500'].sample};",
+                      class: "user-avatar") %>
+        <strong><%= m.sender.username %>:</strong>
+        <%= m.content %>
+
+        <% if m.file.attached? %>
+          <br>
+          <% if m.file.image? %>
+            <%= link_to url_for(m.file), target: "_blank" do %>
+              <%= image_tag m.file, style: "max-width: 200px; display: block; margin-top: 5px; border:1px solid #ccc; border-radius:4px;" %>
+            <% end %>
+          <% elsif m.file.content_type.start_with?('audio') %>
+            <audio controls style="margin-top: 5px;">
+              <source src="<%= url_for(m.file) %>" type="<%= m.file.content_type %>">
+              Ваш браузер не поддерживает аудио.
+            </audio>
+          <% elsif m.file.content_type.start_with?('video') %>
+            <video controls style="max-width: 300px; display: block; margin-top: 5px; border:1px solid #ccc; border-radius:4px;">
+              <source src="<%= url_for(m.file) %>" type="<%= m.file.content_type %>">
+              Ваш браузер не поддерживает видео.
+            </video>
+          <% else %>
+            📎 <%= link_to m.file.filename, url_for(m.file) %>
+          <% end %>
+        <% end %>
+
+        <% if m.reply_to.present? %>
+          <br><small>↳ В ответ на: <%= truncate(m.reply_to.content, length: 30) %></small>
+        <% end %>
+        <br><small><%= l m.created_at, format: :short %></small>
+        <%= link_to "Ответить", user_messages_path(@other, reply_to: m.id), class: "btn btn-sm", style: "float: right" %>
+      </p>
+    <% end %>
+  </div>
+
+  <%= form_with model: [@other, @message], local: true do |f| %>
+    <%= f.hidden_field :reply_to_id %>
+    <p>
+      <%= f.label :content, "Сообщение" %><br>
+      <%= f.text_area :content, style: "height: 80px" %>
+      <% if @message.errors[:content].any? %>
+      <div class="error"><%= @message.errors[:content].first %></div>
+    <% end %>
+
+
+
+    <div class = "send-block">
+    <p><%= f.submit "Отправить", class: "btn" %>
+      <% if @message.reply_to_id.present? %> <%= link_to "Отменить ответ", user_messages_path(@other), class: "btn btn-sm" %> <% end %>
+      <p>
+        <label class="btn" style="position: relative;">
+          📎 Прикрепить файл
+          <%= f.file_field :file, style: "display: none;",
+                           onchange: "this.nextElementSibling.innerText = this.files[0]?.name || 'Файл не выбран'" %>
+          <span class="filename" style="margin-left: 10px; font-size: 12px; color: #555;">Файл не выбран</span>
+        </label>
+      </p>
+    </div>
+  <% end %>
+</section>
