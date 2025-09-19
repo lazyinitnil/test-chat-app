@@ -1,24 +1,23 @@
-# README
+# Test Chat App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Простой чат на Ruby on Rails с пользовательской регистрацией с помощью юзернеймов, случайно генерируемыми аватарами, временем последнего входа и вложениями в чате.
 
-Things you may want to cover:
+**Требования**
+* Ruby 3.x
+* Rails 8.x
 
-* Ruby version
+**Установка**
 
-* System dependencies
+**1.** Клонировать репозиторий, перейти в папку с проектом
 
-* Configuration
+**2.** Установить зависимости с помощью bundle install
 
-* Database creation
+**3.** Создать базу данных:
 
-* Database initialization
+- rails db:create
+- rails db:migrate
+- rails db:seed
 
-* How to run the test suite
+**4.** Запустить сервер с помощью rails server
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Пользователи автоматически создаются через db:seed, пароль для всех пользователей:password.
